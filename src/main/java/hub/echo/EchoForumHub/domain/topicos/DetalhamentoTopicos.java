@@ -9,7 +9,7 @@ public record DetalhamentoTopicos(
 		String titulo,
 		String mensagem,
 		
-		@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+		@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
 		LocalDateTime data,
 		
 		String autor,
