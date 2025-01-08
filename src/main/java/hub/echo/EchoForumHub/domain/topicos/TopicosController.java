@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -18,6 +19,7 @@ public class TopicosController {
 	private TopicosRepository topicosRepository;
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder) {
 		var topico = new Topicos(dadosCadastroTopico);
 		topicosRepository.save(topico);
