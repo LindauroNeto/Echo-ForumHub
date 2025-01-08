@@ -48,6 +48,25 @@ public class Topicos {
 	@Column(name = "ativo", nullable = false)
 	private Boolean topicoAtivo;
 	
+	public void atualizar(DadosAtualizacaoTopico dados) {
+		if (dados.titulo() != null) {
+			this.titulo = dados.titulo();
+		}
+		
+		if (dados.mensagem() != null) {
+			this.mensagem = dados.mensagem();
+		}
+		
+		if (dados.autor() != null) {
+			this.autor = dados.autor();
+		}
+		
+		if (dados.curso() != null) {
+			this.curso = dados.curso();
+		}
+		
+	}
+	
 	public void excluir() {
 		this.topicoAtivo = false;
 		this.status = StatusTopicos.ENCERRADO;

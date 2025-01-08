@@ -5,10 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,12 +39,26 @@ public class TopicosController {
 	@GetMapping
 	public ResponseEntity<Page<DetalhamentoTopicos>> listarTopicos(@PageableDefault(size = 15, sort = "data", direction = Direction.DESC) Pageable paginacao) {
 		var pagina = topicosRepository.findAllByTopicoAtivoTrue(paginacao).map(DetalhamentoTopicos::new);
-		return ResponseEntity.ok(pagina);
+		return ResponseEntity.status(HttpStatus.OK).body(pagina);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> listarUm(@PathVariable Long id) {
-		var topico = topicosRepository.getReferenceById(id);
-		return ResponseEntity.ok(new DetalhamentoTopicos(topico));
+	public ResponseEntity<Object> listarUm(@PathVariable Long id) {
+		var topico = topicosRepository.findById(id);
+		if (topico.isEmpty()) {
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dadosAtualizacaoTopico) {
+		var topico = topicosRepository.findById(id);
+		if (topico.isEmpty()) {
+			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+		}
+		topico.get().atualizar(dadosAtualizacaoTopico);
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
 	}
 }
