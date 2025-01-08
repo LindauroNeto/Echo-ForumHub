@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,10 +44,10 @@ public class TopicosController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> listarUm(@PathVariable Long id) {
+	public ResponseEntity<?> listarUm(@PathVariable Long id) {
 		var topico = topicosRepository.findById(id);
 		if (topico.isEmpty()) {
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
 	}
@@ -56,9 +57,20 @@ public class TopicosController {
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = topicosRepository.findById(id);
 		if (topico.isEmpty()) {
-			ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
 		}
 		topico.get().atualizar(dadosAtualizacaoTopico);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> deletar(@PathVariable Long id) {
+		var topico = topicosRepository.findById(id);
+		if (topico.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+		}
+		topicosRepository.deleteById(topico.get().getId());
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
