@@ -45,7 +45,7 @@ public class TopicosController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> listarUm(@PathVariable Long id) {
-		var topico = topicosRepository.findById(id);
+		var topico = topicosRepository.findByIdAndTopicoAtivoTrue(id);
 		if (topico.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
 		}
@@ -70,7 +70,7 @@ public class TopicosController {
 		if (topico.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
 		}
-		topicosRepository.deleteById(topico.get().getId());
+		topico.get().excluir();
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
