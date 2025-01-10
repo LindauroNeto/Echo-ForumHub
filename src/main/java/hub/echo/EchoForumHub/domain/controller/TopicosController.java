@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.domain.topicos;
+package hub.echo.EchoForumHub.domain.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import hub.echo.EchoForumHub.domain.dto.DadosAtualizacaoTopico;
+import hub.echo.EchoForumHub.domain.dto.DadosCadastroTopico;
+import hub.echo.EchoForumHub.domain.dto.DetalhamentoTopicos;
+import hub.echo.EchoForumHub.domain.model.Topicos;
+import hub.echo.EchoForumHub.domain.repository.TopicosRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

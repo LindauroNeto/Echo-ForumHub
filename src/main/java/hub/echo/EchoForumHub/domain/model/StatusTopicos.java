@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.domain.topicos;
+package hub.echo.EchoForumHub.domain.model;
 
 public enum StatusTopicos {
 

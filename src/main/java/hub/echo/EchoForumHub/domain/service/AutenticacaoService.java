@@ -1,10 +1,12 @@
-package hub.echo.EchoForumHub.domain.usuarios;
+package hub.echo.EchoForumHub.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import hub.echo.EchoForumHub.domain.repository.UsuarioRepository;
 
 @Service
 public class AutenticacaoService implements UserDetailsService {

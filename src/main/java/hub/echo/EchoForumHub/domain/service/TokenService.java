@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.infra.security;
+package hub.echo.EchoForumHub.domain.service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import hub.echo.EchoForumHub.domain.usuarios.Usuario;
+import hub.echo.EchoForumHub.domain.model.Usuario;
 
 @Service
 public class TokenService {

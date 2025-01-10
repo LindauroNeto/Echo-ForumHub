@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.domain.usuarios;
+package hub.echo.EchoForumHub.domain.model;
 
 import java.util.Collection;
 import java.util.List;

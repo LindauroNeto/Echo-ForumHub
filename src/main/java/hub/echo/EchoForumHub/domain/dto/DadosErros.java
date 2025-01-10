@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.infra.exception;
+package hub.echo.EchoForumHub.domain.dto;
 
 import org.springframework.validation.FieldError;
 

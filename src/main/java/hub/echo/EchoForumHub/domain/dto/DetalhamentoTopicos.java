@@ -1,8 +1,10 @@
-package hub.echo.EchoForumHub.domain.topicos;
+package hub.echo.EchoForumHub.domain.dto;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import hub.echo.EchoForumHub.domain.model.Topicos;
 
 public record DetalhamentoTopicos(
 		Long id,

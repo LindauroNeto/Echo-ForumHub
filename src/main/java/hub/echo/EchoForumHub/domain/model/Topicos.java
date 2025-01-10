@@ -1,7 +1,9 @@
-package hub.echo.EchoForumHub.domain.topicos;
+package hub.echo.EchoForumHub.domain.model;
 
 import java.time.LocalDateTime;
 
+import hub.echo.EchoForumHub.domain.dto.DadosAtualizacaoTopico;
+import hub.echo.EchoForumHub.domain.dto.DadosCadastroTopico;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,14 +59,6 @@ public class Topicos {
 		
 		if (dados.mensagem() != null) {
 			this.mensagem = dados.mensagem();
-		}
-		
-		if (dados.autor() != null) {
-			this.autor = dados.autor();
-		}
-		
-		if (dados.curso() != null) {
-			this.curso = dados.curso();
 		}
 		
 	}

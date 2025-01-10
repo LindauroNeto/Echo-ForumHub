@@ -1,6 +1,4 @@
-package hub.echo.EchoForumHub.domain.topicos;
-
-import java.time.LocalDateTime;
+package hub.echo.EchoForumHub.domain.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 
@@ -10,8 +8,6 @@ public record DadosCadastroTopico(
 		
 		@NotEmpty
 		String mensagem,
-		
-		LocalDateTime data,
 		
 		@NotEmpty
 		String autor,

@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.infra.security;
+package hub.echo.EchoForumHub.domain.dto;
 
 public record DadosTokenJwt(String token) {
 

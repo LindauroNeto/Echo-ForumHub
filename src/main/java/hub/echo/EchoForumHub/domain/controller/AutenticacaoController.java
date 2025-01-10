@@ -1,4 +1,4 @@
-package hub.echo.EchoForumHub.domain.usuarios;
+package hub.echo.EchoForumHub.domain.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import hub.echo.EchoForumHub.infra.security.DadosTokenJwt;
-import hub.echo.EchoForumHub.infra.security.TokenService;
+import hub.echo.EchoForumHub.domain.dto.DadosCadastroLogin;
+import hub.echo.EchoForumHub.domain.dto.DadosTokenJwt;
+import hub.echo.EchoForumHub.domain.model.Usuario;
+import hub.echo.EchoForumHub.domain.service.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
