@@ -22,13 +22,16 @@ import hub.echo.EchoForumHub.domain.dto.DadosCadastroTopico;
 import hub.echo.EchoForumHub.domain.dto.DetalhamentoTopicos;
 import hub.echo.EchoForumHub.domain.model.Topicos;
 import hub.echo.EchoForumHub.domain.repository.TopicosRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/topicos")
 @SecurityRequirement(name = "bearer-key")
+@Tag(name = "Tópicos")
 public class TopicosController {
 	
 	@Autowired
@@ -36,6 +39,7 @@ public class TopicosController {
 
 	@PostMapping
 	@Transactional
+	@Operation(summary = "Criação de tópico", description = "Cadastro de novo tópico")
 	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder) {
 		var topico = new Topicos(dadosCadastroTopico);
 		topicosRepository.save(topico);
@@ -45,12 +49,14 @@ public class TopicosController {
 	}
 	
 	@GetMapping
+	@Operation(summary = "Listagem de tópicos", description = "Retorno de todos os tópicos cadastrados de forma paginada")
 	public ResponseEntity<Page<DetalhamentoTopicos>> listarTopicos(@PageableDefault(size = 15, sort = "data", direction = Direction.DESC) Pageable paginacao) {
 		var pagina = topicosRepository.findAllByTopicoAtivoTrue(paginacao).map(DetalhamentoTopicos::new);
 		return ResponseEntity.status(HttpStatus.OK).body(pagina);
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(summary = "Obtenção tópico", description = "Obtenção de tópico único, por meio do id")
 	public ResponseEntity<?> listarUm(@PathVariable Long id) {
 		var topico = topicosRepository.findByIdAndTopicoAtivoTrue(id);
 		if (topico.isEmpty()) {
@@ -61,6 +67,7 @@ public class TopicosController {
 	
 	@PutMapping("/{id}")
 	@Transactional
+	@Operation(summary = "Atualização de tópico", description = "Atualização de tópico cadastrado")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = topicosRepository.findById(id);
 		if (topico.isEmpty()) {
@@ -72,6 +79,7 @@ public class TopicosController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
+	@Operation(summary = "Excluir tópico", description = "Exclusão lógica de tópico")
 	public ResponseEntity<?> deletar(@PathVariable Long id) {
 		var topico = topicosRepository.findById(id);
 		if (topico.isEmpty()) {
