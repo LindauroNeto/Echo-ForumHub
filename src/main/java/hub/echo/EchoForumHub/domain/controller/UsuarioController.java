@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import hub.echo.EchoForumHub.domain.dto.DadosCadastroLogin;
+import hub.echo.EchoForumHub.domain.dto.DadosDetalhamentoUsuario;
 import hub.echo.EchoForumHub.domain.dto.DadosTokenJwt;
 import hub.echo.EchoForumHub.domain.model.Usuario;
 import hub.echo.EchoForumHub.domain.repository.UsuarioRepository;
@@ -46,10 +48,13 @@ public class UsuarioController {
 	
 	@PostMapping("/cadastro")
 	@Transactional
-	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroLogin dadosCadastro){
+	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroLogin dadosCadastro, UriComponentsBuilder uriBuilder){
 		var usuario = new Usuario(dadosCadastro.usuario(), service.criptografarSenha(dadosCadastro.senha()));
+		var uri = uriBuilder.path("/cadastro/{id}").buildAndExpand(usuario.getId()).toUri();
+		
 		repository.save(usuario);
-		return ResponseEntity.status(HttpStatus.OK).body("Cadastro concluído!");
+		
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
 	}
 
 }
