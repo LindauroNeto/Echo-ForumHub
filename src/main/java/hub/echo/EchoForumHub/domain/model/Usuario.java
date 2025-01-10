@@ -66,6 +66,11 @@ public class Usuario implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+	public Usuario(String usuario, String senha) {
+		this.usuario = usuario;
+		this.senha = senha;
+	}
 	
 
 }

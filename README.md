@@ -5,7 +5,7 @@ Sistema de fórum para a criação de tópicos para sanar dúvidas de cursos e e
 No momento o sistema possui funcionalidades para as partes de **Tópicos** e **Usuários**.
 
 ### Tópicos
-1. **Cadastro de um novo tópico**: Ao preencher na requisição os campos: `titulo`, `mensagem`, `autor` e `curso`. A requisição é enviada ao sistema e salva no banco de dados.
+1. **Cadastro de um novo tópico**: Ao preencher na requisição os campos: `titulo`, `mensagem`, `autor` (por enquanto) e `curso`. A requisição é enviada ao sistema e salva no banco de dados.
 2. **Listagem dos tópicos**: Listagem única (informando o id) ou de todos os tópicos criados, em forma paginada.
 3. **Atualização de informações**: Ao informar no caminho da url o id do tópico, é possível alterar as informações do tópico, ao preencher os campos `titulo` e `mensagem` no corpo da requisição aos novos valores atribuídos.
 4. **Exclusão do tópico**: Ao informar no caminho da url o id do tópico, ele é excluído de forma lógica do sistema (sendo necessário realizar um DELETE no banco de dados para uma exclusão definitiva do tópico).
