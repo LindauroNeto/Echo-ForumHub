@@ -16,7 +16,6 @@ import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -38,7 +37,6 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/cadastro")
-	@Transactional
 	@Operation(summary = "Cadastro de usuário", description = "Cadastro de novo usuário do fórum")
 	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroLogin dadosCadastro, UriComponentsBuilder uriBuilder){
 		var usuario = service.criacaoUsuario(dadosCadastro);

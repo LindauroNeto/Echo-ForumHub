@@ -1,7 +1,5 @@
 package hub.forum.echo.domain.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +9,7 @@ import hub.forum.echo.domain.dto.DadosCadastroTopico;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
 import hub.forum.echo.domain.model.Topicos;
 import hub.forum.echo.domain.repository.TopicosRepository;
+import hub.forum.echo.infra.exception.TopicoNaoEncontradoException;
 
 @Service
 public class TopicosService {
@@ -28,11 +27,12 @@ public class TopicosService {
 		return repository.findAllByTopicoAtivoTrue(paginacao).map(DetalhamentoTopicos::new);
 	}
 	
-	public Optional<Topicos> verTopicoAtivo(Long id) {
-		return repository.findByIdAndTopicoAtivoTrue(id);
+	public Topicos verTopicoAtivo(Long id) {
+		var topicoO = repository.findByIdAndTopicoAtivoTrue(id);
+		if (topicoO.isEmpty()) {
+			throw new TopicoNaoEncontradoException("Tópcio não encontrado");
+		}
+		return topicoO.get();
 	}
 	
-	public Optional<Topicos> verTopico(Long id) {
-		return repository.findById(id);
-	}
 }

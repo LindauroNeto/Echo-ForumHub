@@ -16,6 +16,11 @@ import jakarta.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class TratadorDeExceptions {
 	
+	@ExceptionHandler(TopicoNaoEncontradoException.class)
+	public ResponseEntity<?> tratarTopicoNaoEncontrado(TopicoNaoEncontradoException tnee) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(tnee.getMessage());
+	}
+	
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<?> tratarErro404() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

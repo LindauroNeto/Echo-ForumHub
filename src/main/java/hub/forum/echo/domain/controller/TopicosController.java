@@ -25,7 +25,6 @@ import hub.forum.echo.domain.service.TopicosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -41,7 +40,6 @@ public class TopicosController {
 	private PathUriService pathUriService;
 
 	@PostMapping
-	@Transactional
 	@Operation(summary = "Criação de tópico", description = "Cadastro de novo tópico")
 	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder) {
 		var topico = service.criacaoTopico(dadosCadastroTopico);
@@ -60,33 +58,22 @@ public class TopicosController {
 	@Operation(summary = "Obtenção tópico", description = "Obtenção de tópico único, por meio do id")
 	public ResponseEntity<?> listarUm(@PathVariable Long id) {
 		var topico = service.verTopicoAtivo(id);
-		if (topico.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}
 	
 	@PutMapping("/{id}")
-	@Transactional
 	@Operation(summary = "Atualização de tópico", description = "Atualização de tópico cadastrado")
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = service.verTopicoAtivo(id);
-		if (topico.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado ou excluído");
-		}
-		topico.get().atualizar(dadosAtualizacaoTopico);
-		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico.get()));
+		topico.atualizar(dadosAtualizacaoTopico);
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}
 	
 	@DeleteMapping("/{id}")
-	@Transactional
 	@Operation(summary = "Excluir tópico", description = "Exclusão lógica de tópico")
 	public ResponseEntity<?> deletar(@PathVariable Long id) {
 		var topico = service.verTopicoAtivo(id);
-		if (topico.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado ou já excluído");
-		}
-		topico.get().excluir();
+		topico.excluir();
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
