@@ -25,7 +25,7 @@ public class UsuarioService {
 	@Autowired
 	private TokenService tokenService;
 	
-	public String criptografarSenha(String senha) {
+	private String criptografarSenha(String senha) {
 		return passwordEncoder.encode(senha);
 	}
 	
