@@ -12,7 +12,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	UserDetails findByUsuario(String usuario);
 	
-	@Query("SELECT u FROM Usuario u WHERER u.usuario = :usuario")
+	@Query("SELECT u FROM Usuario u WHERE u.usuario = :usuario")
 	Optional<Usuario> encontrarUsuario (String usuario);
 
 }
