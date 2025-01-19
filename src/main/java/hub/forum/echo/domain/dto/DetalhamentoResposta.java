@@ -7,18 +7,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import hub.forum.echo.domain.model.Resposta;
 
 public record DetalhamentoResposta(
-		Long id,
+		String tituloTopico,
+		Long idResposta,
+		String autor,
 		String mensagem,
 		
 		@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
-		LocalDateTime data,
+		LocalDateTime data
 		
-		String autor,
-		String tituloTopico
 		) {
 	
 	public DetalhamentoResposta(Resposta resposta) {
-		this(resposta.getId(), resposta.getMensagem(), resposta.getData(), resposta.getAutor().getUsuario(), resposta.getTopico().getTitulo());
+		this(resposta.getTopico().getTitulo(), resposta.getId(), resposta.getAutor().getUsuario(), resposta.getMensagem(), resposta.getData());
 	}
 
 }

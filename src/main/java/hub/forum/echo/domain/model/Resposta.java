@@ -37,6 +37,9 @@ public class Resposta {
 	@Column(name = "data_de_resposta", nullable = false)
 	private LocalDateTime data;
 	
+	@Column(nullable = false)
+	private Boolean ativo;
+	
 	@ManyToOne
 	private Usuario autor;
 	
@@ -47,6 +50,7 @@ public class Resposta {
 		this.mensagem = dados.mensagem();
 		this.autor = usuario;
 		this.topico = topico;
+		this.ativo = true;
 	}
 
 }

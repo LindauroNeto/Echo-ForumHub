@@ -26,6 +26,11 @@ public class TratadorDeExceptions {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
 	}
 	
+	@ExceptionHandler(RespostaNaoEncontradaException.class)
+	public ResponseEntity<?> tratarRespostaNaoEncontrada() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resposta não encontrada");
+	}
+	
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<?> tratarErro404() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
