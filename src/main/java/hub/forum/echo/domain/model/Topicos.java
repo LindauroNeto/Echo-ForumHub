@@ -47,7 +47,7 @@ public class Topicos {
 	private StatusTopicos status;
 	
 	@Column(nullable = false)
-	private String autor;
+	private Usuario autor;
 	
 	@Column(nullable = false)
 	private String curso;
@@ -74,7 +74,7 @@ public class Topicos {
 		this.status = StatusTopicos.ENCERRADO;
 	}
 
-	public Topicos(DadosCadastroTopico dados, String usuario) {
+	public Topicos(DadosCadastroTopico dados, Usuario usuario) {
 		this.titulo = dados.titulo();
 		this.mensagem = dados.mensagem();
 		this.data = LocalDateTime.now();

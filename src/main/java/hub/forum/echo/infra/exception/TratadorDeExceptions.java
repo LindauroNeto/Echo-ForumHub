@@ -17,13 +17,13 @@ import jakarta.persistence.EntityNotFoundException;
 public class TratadorDeExceptions {
 	
 	@ExceptionHandler(TopicoNaoEncontradoException.class)
-	public ResponseEntity<?> tratarTopicoNaoEncontrado(TopicoNaoEncontradoException tnee) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(tnee.getMessage());
+	public ResponseEntity<?> tratarTopicoNaoEncontrado() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
 	}
 	
 	@ExceptionHandler(UsuarioNaoEncontradoException.class)
-	public ResponseEntity<?> tratarUsuarioNaoEncontrado(UsuarioNaoEncontradoException unee) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(unee.getMessage());
+	public ResponseEntity<?> tratarUsuarioNaoEncontrado() {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)

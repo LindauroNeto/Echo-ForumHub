@@ -20,7 +20,7 @@ public record DetalhamentoTopicos(
 		) {
 	
 	public DetalhamentoTopicos(Topicos topicos) {
-		this(topicos.getId(), topicos.getTitulo(), topicos.getMensagem(), topicos.getData(), topicos.getAutor(), topicos.getCurso());
+		this(topicos.getId(), topicos.getTitulo(), topicos.getMensagem(), topicos.getData(), topicos.getAutor().getUsuario(), topicos.getCurso());
 	}
 
 }

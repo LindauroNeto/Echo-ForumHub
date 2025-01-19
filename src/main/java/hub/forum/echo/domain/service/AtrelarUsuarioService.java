@@ -3,6 +3,7 @@ package hub.forum.echo.domain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.UsuarioRepository;
 import hub.forum.echo.infra.exception.UsuarioNaoEncontradoException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,13 +17,13 @@ public class AtrelarUsuarioService {
 	@Autowired
 	private TokenService tokenService;
 
-	public String obterUsuario(HttpServletRequest request) {
+	public Usuario obterUsuario(HttpServletRequest request) {
 		var tokenSubject = receberUsuarioPeloToken(request);
 		var usuarioO = usuarioRepository.encontrarUsuario(tokenSubject);
 		if (usuarioO.isEmpty()) {
-			throw new UsuarioNaoEncontradoException("Usuário não encontrado");
+			throw new UsuarioNaoEncontradoException();
 		}
-		return usuarioO.get().getUsuario();
+		return usuarioO.get();
 	}
 
 	private String receberUsuarioPeloToken(HttpServletRequest request) {
