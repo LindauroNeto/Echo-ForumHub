@@ -9,7 +9,7 @@ import hub.forum.echo.domain.model.Resposta;
 public record DetalhamentoResposta(
 		String tituloTopico,
 		Long idResposta,
-		String autor,
+		String usuario,
 		String mensagem,
 		
 		@JsonFormat(pattern = "HH:mm dd/MM/yyyy")

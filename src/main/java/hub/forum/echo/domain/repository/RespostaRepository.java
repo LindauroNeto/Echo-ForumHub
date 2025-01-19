@@ -12,6 +12,6 @@ public interface RespostaRepository extends JpaRepository<Resposta, Long> {
 
 	Page<Resposta> findAllByTopicoIdAndAtivoTrue(Long id, Pageable paginacao);
 
-	Optional<Resposta> findByIdAndTopicoId(Long idResposta, Long id);
+	Optional<Resposta> findByIdAndTopicoIdAndAtivoTrue(Long idResposta, Long id);
 
 }

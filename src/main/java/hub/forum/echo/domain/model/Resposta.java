@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
 import hub.forum.echo.domain.dto.DadosResposta;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,6 +52,16 @@ public class Resposta {
 		this.autor = usuario;
 		this.topico = topico;
 		this.ativo = true;
+	}
+
+	public void atualizar(DadosAtualizacaoResposta dadosAtualizacao) {
+		if (dadosAtualizacao.mensagem() != null) {
+			this.mensagem = dadosAtualizacao.mensagem();
+		}
+	}
+
+	public void excluir() {
+		this.ativo = false;
 	}
 
 }

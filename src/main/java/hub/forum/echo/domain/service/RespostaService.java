@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
 import hub.forum.echo.domain.dto.DadosResposta;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.model.Resposta;
@@ -50,11 +51,25 @@ public class RespostaService {
 	public Resposta verResposta(Long id, Long idResposta) {
 		var topicoId = validacaoTopico(id);
 		
-		var respostaO = repository.findByIdAndTopicoId(idResposta, topicoId.getId());
+		var respostaO = repository.findByIdAndTopicoIdAndAtivoTrue(idResposta, topicoId.getId());
 		if (respostaO.isEmpty()) {
 			throw new RespostaNaoEncontradaException();
 		}
 		return respostaO.get();
+	}
+
+	public Resposta atualizarResposta(Long idTopico, Long idResposta, DadosAtualizacaoResposta dadosAtualizacao) {
+		var resposta = verResposta(idTopico, idResposta);
+		resposta.atualizar(dadosAtualizacao);
+		repository.save(resposta);
+		return resposta;
+	}
+
+	public void excluirResposta(Long idTopico, Long idResposta) {
+		var resposta = verResposta(idTopico, idResposta);
+		resposta.excluir();
+		repository.save(resposta);
+		System.out.println(resposta.getAtivo());
 	}
 	
 	private Topicos validacaoTopico(Long idTopico) {
