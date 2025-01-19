@@ -17,8 +17,8 @@ public class TopicosService {
 	@Autowired
 	private TopicosRepository repository;
 	
-	public Topicos criacaoTopico(DadosCadastroTopico dadosCadastroTopico) {
-		var topico = new Topicos(dadosCadastroTopico);
+	public Topicos criacaoTopico(DadosCadastroTopico dadosCadastroTopico, String usuario) {
+		var topico = new Topicos(dadosCadastroTopico, usuario);
 		repository.save(topico);
 		return topico;
 	}
@@ -34,5 +34,5 @@ public class TopicosService {
 		}
 		return topicoO.get();
 	}
-	
+
 }
