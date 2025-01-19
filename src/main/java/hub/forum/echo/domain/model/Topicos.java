@@ -1,8 +1,6 @@
 package hub.forum.echo.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import hub.forum.echo.domain.dto.DadosAtualizacaoTopico;
 import hub.forum.echo.domain.dto.DadosCadastroTopico;
@@ -13,7 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -55,9 +52,6 @@ public class Topicos {
 	@Column(name = "ativo", nullable = false)
 	private Boolean topicoAtivo;
 	
-	@OneToMany
-	private List<Resposta> respostas = new ArrayList<>();
-	
 	public void atualizar(DadosAtualizacaoTopico dados) {
 		if (dados.titulo() != null) {
 			this.titulo = dados.titulo();
@@ -74,12 +68,12 @@ public class Topicos {
 		this.status = StatusTopicos.ENCERRADO;
 	}
 
-	public Topicos(DadosCadastroTopico dados, String usuario) {
+	public Topicos(DadosCadastroTopico dados) {
 		this.titulo = dados.titulo();
 		this.mensagem = dados.mensagem();
 		this.data = LocalDateTime.now();
 		this.status = StatusTopicos.SEM_RESPOSTAS;
-		this.autor = usuario;
+		this.autor = dados.autor();
 		this.curso = dados.curso();
 		this.topicoAtivo = true;
 	}
