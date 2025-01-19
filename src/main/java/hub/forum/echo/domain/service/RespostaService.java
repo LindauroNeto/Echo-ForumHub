@@ -9,6 +9,7 @@ import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
 import hub.forum.echo.domain.dto.DadosResposta;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.model.Resposta;
+import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Topicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
@@ -37,6 +38,8 @@ public class RespostaService {
 		if (usuarioO.isEmpty()) {
 			throw new UsuarioNaoEncontradoException();
 		}
+		
+		topicoO.alterarStatus(StatusTopicos.EM_ABERTO);
 		
 		var resposta = new Resposta(dadosResposta, usuarioO.get(), topicoO);
 		repository.save(resposta);

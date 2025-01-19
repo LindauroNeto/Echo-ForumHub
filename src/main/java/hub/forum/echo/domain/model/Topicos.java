@@ -91,5 +91,9 @@ public class Topicos {
 		this.curso = dados.curso();
 		this.topicoAtivo = true;
 	}
+
+	public void alterarStatus(StatusTopicos status) {
+		this.status = status;
+	}
 	
 }
