@@ -43,8 +43,10 @@ public class Resposta {
 	@ManyToOne
 	private Topicos topico;
 	
-	public Resposta(DadosResposta dados) {
+	public Resposta(DadosResposta dados, Usuario usuario, Topicos topico) {
 		this.mensagem = dados.mensagem();
+		this.autor = usuario;
+		this.topico = topico;
 	}
 
 }

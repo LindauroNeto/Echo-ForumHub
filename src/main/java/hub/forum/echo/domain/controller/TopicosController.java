@@ -20,11 +20,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import hub.forum.echo.domain.dto.DadosAtualizacaoTopico;
 import hub.forum.echo.domain.dto.DadosCadastroTopico;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
+import hub.forum.echo.domain.service.AtrelarUsuarioService;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.TopicosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -38,11 +40,15 @@ public class TopicosController {
 	
 	@Autowired
 	private PathUriService pathUriService;
+	
+	@Autowired
+	private AtrelarUsuarioService atrelamento;
 
 	@PostMapping
 	@Operation(summary = "Criação de tópico", description = "Cadastro de novo tópico")
-	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder) {
-		var topico = service.criacaoTopico(dadosCadastroTopico);
+	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
+		var usuario = atrelamento.obterUsuario(request);
+		var topico = service.criacaoTopico(dadosCadastroTopico, usuario);
 		var uri = pathUriService.criacaoPathUri(uriBuilder, topico.getId());
 		return ResponseEntity.created(uri).body(new DetalhamentoTopicos(topico));
 	}
