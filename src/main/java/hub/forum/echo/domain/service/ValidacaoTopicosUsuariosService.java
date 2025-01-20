@@ -21,25 +21,42 @@ public class ValidacaoTopicosUsuariosService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	public Topicos validacaoTopico(Long idTopico) {
-		if (!topicosRepository.existsById(idTopico)) {
+	public Topicos validacaoTopicoPorId(Long idTopico) {
+		var topicoO = topicosRepository.findByIdAndTopicoAtivoTrue(idTopico);
+		if (topicoO.isEmpty()) {
 			throw new TopicoNaoEncontradoException();
 		}
 		return topicosRepository.getReferenceById(idTopico);
 	}
 	
-	public Usuario validacaoUsuario(Usuario usuario) {
-		var usuarioO = usuarioRepository.encontrarUsuario(usuario.getUsuario());
+	public Usuario validacaoUsuarioPorNome(String usuario) {
+		var usuarioO = usuarioRepository.findByUsuarioAndAtivoTrue(usuario);
 		if (usuarioO.isEmpty()) {
 			throw new UsuarioNaoEncontradoException();
 		}
-		return usuarioO.get();
+		return usuarioRepository.getReferenceById(usuarioO.get().getId());
 	}
 	
-	public void validarTopicoFinalizado(Topicos topico) {
+	public Usuario validacaoUsuarioPorId(Long id) {
+		var usuarioO = usuarioRepository.findByIdAndAtivoTrue(id);
+		if (usuarioO.isEmpty()) {
+			throw new UsuarioNaoEncontradoException();
+		}
+		return usuarioRepository.getReferenceById(usuarioO.get().getId());
+	}
+	
+	public void validacaoTopicoFinalizado(Topicos topico) {
 		if (topico.getStatus() == StatusTopicos.RESOLVIDO || topico.getStatus() == StatusTopicos.ENCERRADO) {
 			throw new TopicoEncerradoResolvidoExcpetion();
 		}
+	}
+
+	public Usuario validacaoUsuarioEUsuario(Usuario usuario1, Usuario usuario2) {
+		if (usuario1 != usuario2) {
+			throw new UsuarioIncompativelException();
+		}
+		
+		return usuario1;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import hub.forum.echo.domain.dto.DetalhamentoErros;
+import hub.forum.echo.domain.service.UsuarioIncompativelException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -39,6 +40,11 @@ public class TratadorDeExceptions {
 	@ExceptionHandler(TopicoEncerradoResolvidoExcpetion.class)
 	public ResponseEntity<?> tratarTopicoResolvido(TopicoEncerradoResolvidoExcpetion tere) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(tere.getMessage());
+	}
+	
+	@ExceptionHandler(UsuarioIncompativelException.class)
+	public ResponseEntity<?> tratarTopicoResolvido(UsuarioIncompativelException uie) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(uie.getMessage());
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)

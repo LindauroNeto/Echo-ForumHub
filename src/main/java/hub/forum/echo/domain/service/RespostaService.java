@@ -13,7 +13,6 @@ import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
 import hub.forum.echo.infra.exception.RespostaNaoEncontradaException;
-import hub.forum.echo.infra.exception.UsuarioNaoEhAutorException;
 
 @Service
 public class RespostaService {
@@ -25,25 +24,25 @@ public class RespostaService {
 	private ValidacaoTopicosUsuariosService validador;
 
 	public Resposta criarResposta(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
-		var topicoO = validador.validacaoTopico(idTopico);
-		var usuarioO = validador.validacaoUsuario(usuario);
+		var topico = validador.validacaoTopicoPorId(idTopico);
+		var usuarioO = validador.validacaoUsuarioPorNome(usuario.getUsuario());
 		
-		validador.validarTopicoFinalizado(topicoO);
+		validador.validacaoTopicoFinalizado(topico);
 		
-		topicoO.alterarStatus(StatusTopicos.EM_ABERTO);
+		topico.alterarStatus(StatusTopicos.EM_ABERTO);
 		
-		var resposta = new Resposta(dadosResposta, usuarioO, topicoO);
+		var resposta = new Resposta(dadosResposta, usuarioO, topico);
 		repository.save(resposta);
 		return resposta;
 	}
 
 	public Page<DetalhamentoResposta> listarRespostas(Long id, Pageable paginacao) {
-		var topicoId = validador.validacaoTopico(id);
+		var topicoId = validador.validacaoTopicoPorId(id);
 		return repository.findAllByTopicoIdAndAtivoTrue(topicoId.getId(), paginacao).map(DetalhamentoResposta::new);
 	}
 
 	public Resposta verResposta(Long id, Long idResposta) {
-		var topicoId = validador.validacaoTopico(id);
+		var topicoId = validador.validacaoTopicoPorId(id);
 		
 		var respostaO = repository.findByIdAndTopicoIdAndAtivoTrue(idResposta, topicoId.getId());
 		if (respostaO.isEmpty()) {
@@ -65,20 +64,5 @@ public class RespostaService {
 		repository.save(resposta);
 	}
 	
-	public Resposta finalizarTopico(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
-		var topico = validador.validacaoTopico(idTopico);
-		var usuarioO = validador.validacaoUsuario(usuario);
-		
-		validador.validarTopicoFinalizado(topico);
-		
-		if (!(topico.getAutor().getUsuario() == usuarioO.getUsuario())) {
-			throw new UsuarioNaoEhAutorException();
-		}
-		
-		topico.alterarStatus(StatusTopicos.RESOLVIDO);
-		
-		var resposta = new Resposta(dadosResposta, usuarioO, topico);
-		repository.save(resposta);
-		return resposta;
-	}
 }
+	

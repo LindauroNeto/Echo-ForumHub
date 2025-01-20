@@ -76,7 +76,7 @@ public class Usuario implements UserDetails {
 	
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return ativo;
 	}
 
 	public Usuario(String email, String usuario, String senha) {
@@ -84,6 +84,11 @@ public class Usuario implements UserDetails {
 		this.usuario = usuario;
 		this.senha = senha;
 		this.ativo = true;
+	}
+
+	public void excluir() {
+		this.ativo = false;
+		
 	}
 	
 
