@@ -9,7 +9,7 @@ public class UsuarioIncompativelException extends RuntimeException {
 	
 	@Override
 	public String getMessage() {
-		return "Usuário incompatível";
+		return "Usuário incompatível para realizar a operação";
 	}
 
 }

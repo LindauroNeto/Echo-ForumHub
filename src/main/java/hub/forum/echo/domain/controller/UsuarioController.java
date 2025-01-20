@@ -35,7 +35,7 @@ public class UsuarioController {
 	
 	@PostMapping("/login")
 	@Operation(summary = "Login de usuário", description = "Login de usuário para acesso do fórum")
-	public ResponseEntity<?> login(@RequestBody @Valid LoginDTO dadosLogin){
+	public ResponseEntity<?> login(@RequestBody @Valid LoginDTO dadosLogin) {
 		var tokenJWT = service.autenticacao(dadosLogin);
 		return ResponseEntity.status(HttpStatus.OK).body(new TokenJwtDTO(tokenJWT));
 	}
@@ -44,7 +44,7 @@ public class UsuarioController {
 	@Operation(summary = "Cadastro de usuário", description = "Cadastro de novo usuário do fórum")
 	public ResponseEntity<?> cadastro(@RequestBody @Valid CadastroDTO dadosCadastro, UriComponentsBuilder uriBuilder){
 		var usuario = service.criacaoUsuario(dadosCadastro);
-		var uri = pathUriService.criacaoPathUri(uriBuilder, usuario.getId());
+		var uri = pathUriService.criacaoPathUri(uriBuilder, usuario.getId(), "cadastro");
 		return ResponseEntity.created(uri).body("Usuário criado com sucesso!");
 	}
 	

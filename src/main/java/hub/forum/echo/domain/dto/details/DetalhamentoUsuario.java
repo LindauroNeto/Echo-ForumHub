@@ -1,4 +1,4 @@
-package hub.forum.echo.domain.dto;
+package hub.forum.echo.domain.dto.details;
 
 import hub.forum.echo.domain.model.Usuario;
 

@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import hub.forum.echo.domain.dto.AtualizacaoTopico;
-import hub.forum.echo.domain.dto.DetalhamentoFinalizacaoTopico;
-import hub.forum.echo.domain.dto.DetalhamentoRespostaSimples;
-import hub.forum.echo.domain.dto.DetalhamentoTopicos;
 import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.dto.TopicoDTO;
+import hub.forum.echo.domain.dto.details.DetalhamentoFinalizacaoTopico;
+import hub.forum.echo.domain.dto.details.DetalhamentoRespostaSimples;
+import hub.forum.echo.domain.dto.details.DetalhamentoTopicos;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.TopicosService;
@@ -52,7 +52,7 @@ public class TopicosController {
 	public ResponseEntity<?> cadastro(@RequestBody @Valid TopicoDTO dadosCadastroTopico, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		var usuario = atrelamento.obterUsuario(request);
 		var topico = service.criacaoTopico(dadosCadastroTopico, usuario);
-		var uri = pathUriService.criacaoPathUri(uriBuilder, topico.getId());
+		var uri = pathUriService.criacaoPathUri(uriBuilder, topico.getId(), "topicos");
 		return ResponseEntity.created(uri).body(new DetalhamentoTopicos(topico));
 	}
 	

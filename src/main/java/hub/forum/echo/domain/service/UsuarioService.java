@@ -10,7 +10,7 @@ import hub.forum.echo.domain.dto.CadastroDTO;
 import hub.forum.echo.domain.dto.LoginDTO;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.UsuarioRepository;
-import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
+import hub.forum.echo.domain.service.validators.ValidacaoUsuarios;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -54,8 +54,8 @@ public class UsuarioService {
 		var usuarioToken = atrelamento.obterUsuario(request);
 		var usuarioId = validacao.validacaoUsuarioPorId(id);
 		
-		var usuario = validacao.validacaoUsuarioEUsuario(usuarioToken, usuarioId);
-		usuario.excluir();
-		repository.save(usuario);
+		validacao.validacaoUsuarioEUsuario(usuarioToken, usuarioId);
+		usuarioId.excluir();
+		repository.save(usuarioId);
 	}
 }

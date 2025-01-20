@@ -1,14 +1,14 @@
-package hub.forum.echo.domain.service.validacao;
+package hub.forum.echo.domain.service.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.UsuarioRepository;
 import hub.forum.echo.infra.exception.UsuarioIncompativelException;
 import hub.forum.echo.infra.exception.UsuarioNaoEncontradoException;
 
-@Service
+@Component
 public class ValidacaoUsuarios {
 
 	@Autowired
@@ -30,11 +30,9 @@ public class ValidacaoUsuarios {
 		return repository.getReferenceById(usuarioO.get().getId());
 	}
 	
-	public Usuario validacaoUsuarioEUsuario(Usuario usuario1, Usuario usuario2) {
+	public void validacaoUsuarioEUsuario(Usuario usuario1, Usuario usuario2) {
 		if (usuario1 != usuario2) {
 			throw new UsuarioIncompativelException();
 		}
-		
-		return usuario1;
 	}
 }

@@ -9,6 +9,6 @@ public class TopicoNaoEncontradoException extends RuntimeException {
 
 	@Override
 	public String getMessage() {
-		return "Tópico não encontrado";
+		return "Tópico não encontrado ou excluído";
 	}
 }

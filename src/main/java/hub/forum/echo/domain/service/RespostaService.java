@@ -6,15 +6,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import hub.forum.echo.domain.dto.AtualizacaoResposta;
-import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.dto.RespostaDTO;
+import hub.forum.echo.domain.dto.details.DetalhamentoResposta;
 import hub.forum.echo.domain.model.Resposta;
 import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
-import hub.forum.echo.domain.service.validacao.ValidacaoTopicos;
-import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
-import hub.forum.echo.infra.exception.RespostaNaoEncontradaException;
+import hub.forum.echo.domain.service.validators.ValidacaoResposta;
+import hub.forum.echo.domain.service.validators.ValidacaoTopicos;
+import hub.forum.echo.domain.service.validators.ValidacaoUsuarios;
 
 @Service
 public class RespostaService {
@@ -27,6 +27,9 @@ public class RespostaService {
 	
 	@Autowired
 	private ValidacaoUsuarios validadorUsuarios;
+	
+	@Autowired
+	private ValidacaoResposta validadorResposta;
 
 	public Resposta criarResposta(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
 		var topico = validadorTopicos.validacaoTopicoPorId(idTopico);
@@ -48,12 +51,7 @@ public class RespostaService {
 
 	public Resposta verResposta(Long id, Long idResposta) {
 		var topicoId = validadorTopicos.validacaoTopicoPorId(id);
-		
-		var respostaO = repository.findByIdAndTopicoIdAndAtivoTrue(idResposta, topicoId.getId());
-		if (respostaO.isEmpty()) {
-			throw new RespostaNaoEncontradaException();
-		}
-		return respostaO.get();
+		return validadorResposta.validacaoTopicoPorIds(idResposta, topicoId.getId());
 	}
 
 	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao) {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import hub.forum.echo.domain.dto.DetalhamentoErros;
+import hub.forum.echo.domain.dto.details.DetalhamentoErros;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -31,13 +31,8 @@ public class TratadorDeExceptions {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rnee.getMessage());
 	}
 	
-	@ExceptionHandler(UsuarioNaoEhAutorException.class)
-	public ResponseEntity<?> tratarUsuarioNaoEhOAutor(UsuarioNaoEhAutorException uneae) {
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(uneae.getMessage());
-	}
-	
-	@ExceptionHandler(TopicoEncerradoResolvidoExcpetion.class)
-	public ResponseEntity<?> tratarTopicoResolvido(TopicoEncerradoResolvidoExcpetion tere) {
+	@ExceptionHandler(TopicoFinalizadoException.class)
+	public ResponseEntity<?> tratarTopicoResolvido(TopicoFinalizadoException tere) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(tere.getMessage());
 	}
 	

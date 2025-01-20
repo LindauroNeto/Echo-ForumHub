@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import hub.forum.echo.domain.dto.AtualizacaoResposta;
-import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.dto.RespostaDTO;
+import hub.forum.echo.domain.dto.details.DetalhamentoResposta;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.RespostaService;
@@ -48,7 +48,9 @@ public class RespostaController {
 	public ResponseEntity<?> responder(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		var usuarioAtrelado = atrelamento.obterUsuario(request);
 		var resposta = service.criarResposta(dadosResposta, usuarioAtrelado, idTopico);
-		var uri = pathUriService.criacaoPathUri(uriBuilder, resposta.getId());
+		var uriTopico = String.format("topicos/%d/", idTopico);
+		var uri = pathUriService.criacaoPathUri(uriBuilder, resposta.getId(), (uriTopico + "resposta"));
+		System.out.println(uri);
 		return ResponseEntity.created(uri).body(new DetalhamentoResposta(resposta));
 	}
 	

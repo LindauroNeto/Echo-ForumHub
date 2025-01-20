@@ -1,4 +1,4 @@
-package hub.forum.echo.domain.dto;
+package hub.forum.echo.domain.dto.details;
 
 import java.time.LocalDateTime;
 

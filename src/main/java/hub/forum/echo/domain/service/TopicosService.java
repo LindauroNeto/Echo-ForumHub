@@ -6,18 +6,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import hub.forum.echo.domain.dto.AtualizacaoTopico;
-import hub.forum.echo.domain.dto.DetalhamentoTopicos;
 import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.dto.TopicoDTO;
+import hub.forum.echo.domain.dto.details.DetalhamentoTopicos;
 import hub.forum.echo.domain.model.Resposta;
 import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Topicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
 import hub.forum.echo.domain.repository.TopicosRepository;
-import hub.forum.echo.domain.service.validacao.ValidacaoTopicos;
-import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
-import hub.forum.echo.infra.exception.UsuarioNaoEhAutorException;
+import hub.forum.echo.domain.service.validators.ValidacaoTopicos;
+import hub.forum.echo.domain.service.validators.ValidacaoUsuarios;
 
 @Service
 public class TopicosService {
@@ -67,10 +66,7 @@ public class TopicosService {
 		var usuarioO = validacaoUsuarios.validacaoUsuarioPorNome(usuario.getUsuario());
 		
 		validacaoTopicos.validacaoTopicoFinalizado(topico);
-		
-		if (!(topico.getAutor().getUsuario() == usuarioO.getUsuario())) {
-			throw new UsuarioNaoEhAutorException();
-		}
+		validacaoUsuarios.validacaoUsuarioEUsuario(topico.getAutor(), usuarioO);
 		
 		topico.alterarStatus(StatusTopicos.RESOLVIDO);
 		
