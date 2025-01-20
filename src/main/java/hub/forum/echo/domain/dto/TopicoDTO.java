@@ -2,7 +2,7 @@ package hub.forum.echo.domain.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public record DadosCadastroTopico(
+public record TopicoDTO(
 		@NotEmpty
 		String titulo,
 		

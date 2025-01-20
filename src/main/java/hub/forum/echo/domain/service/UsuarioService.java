@@ -6,7 +6,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import hub.forum.echo.domain.dto.DadosCadastroLogin;
+import hub.forum.echo.domain.dto.CadastroDTO;
+import hub.forum.echo.domain.dto.LoginDTO;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.UsuarioRepository;
 
@@ -29,13 +30,13 @@ public class UsuarioService {
 		return passwordEncoder.encode(senha);
 	}
 	
-	public Usuario criacaoUsuario(DadosCadastroLogin dadosCadastro) {
-		var usuario = new Usuario(dadosCadastro.usuario(), criptografarSenha(dadosCadastro.senha()));
+	public Usuario criacaoUsuario(CadastroDTO dadosCadastro) {
+		var usuario = new Usuario(dadosCadastro.email(), dadosCadastro.usuario(), criptografarSenha(dadosCadastro.senha()));
 		repository.save(usuario);
 		return usuario;
 	}
 	
-	public String autenticacao(DadosCadastroLogin dadosLogin) {
+	public String autenticacao(LoginDTO dadosLogin) {
 		var autenticacaoUsuario = new UsernamePasswordAuthenticationToken(dadosLogin.usuario(), dadosLogin.senha());
 		var autenticacaoToken = manager.authenticate(autenticacaoUsuario);
 		return tokenService.gerarToken((Usuario) autenticacaoToken.getPrincipal());

@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
-import hub.forum.echo.domain.dto.DadosResposta;
+import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
+import hub.forum.echo.domain.dto.RespostaDTO;
+import hub.forum.echo.domain.dto.DetalhamentoFinalizacaoTopico;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
+import hub.forum.echo.domain.dto.DetalhamentoRespostaSimples;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.RespostaService;
@@ -45,7 +47,7 @@ public class RespostaController {
 	
 	@PostMapping
 	@Operation(summary = "Envio de resposta", description = "Realização de envio de resposta com base no id do tópico")
-	public ResponseEntity<?> responder(@PathVariable Long idTopico, @RequestBody @Valid DadosResposta dadosResposta, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
+	public ResponseEntity<?> responder(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		var usuarioAtrelado = atrelamento.obterUsuario(request);
 		var resposta = service.criarResposta(dadosResposta, usuarioAtrelado, idTopico);
 		var uri = pathUriService.criacaoPathUri(uriBuilder, resposta.getId());
@@ -68,7 +70,7 @@ public class RespostaController {
 	
 	@PutMapping("/{idResposta}")
 	@Operation(summary = "Atualização de mensagem da resposta", description = "Alteração da mensagem da resposta. Para isso é necessário informar o id do tópico e o id da resposta")
-	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid DadosAtualizacaoResposta dadosAtualizacao) {
+	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid AtualizacaoRespostaDTO dadosAtualizacao) {
 		var resposta = service.atualizarResposta(idTopico, idResposta, dadosAtualizacao);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoResposta(resposta));
 	}
@@ -78,6 +80,14 @@ public class RespostaController {
 	public ResponseEntity<?> excluirResposta(@PathVariable Long idTopico, @PathVariable Long idResposta) {
 		service.excluirResposta(idTopico, idResposta);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@PutMapping("/finalizar")
+	@Operation(summary = "Finalizar tópico", description = "Envio de resposta final do tópico")
+	public ResponseEntity<?> finalizar(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		var resposta = service.finalizarTopico(dadosResposta, usuarioAtrelado, idTopico);
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoFinalizacaoTopico(resposta.getTopico(), new DetalhamentoRespostaSimples(resposta)));
 	}
 
 }

@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import hub.forum.echo.domain.dto.DadosAtualizacaoTopico;
-import hub.forum.echo.domain.dto.DadosCadastroTopico;
+import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.TopicoDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -67,7 +67,7 @@ public class Topicos {
 	@Column(name = "respostas")
 	private List<Resposta> respostas = new ArrayList<>();
 	
-	public void atualizar(DadosAtualizacaoTopico dados) {
+	public void atualizar(AtualizacaoTopicoDTO dados) {
 		if (dados.titulo() != null) {
 			this.titulo = dados.titulo();
 		}
@@ -83,7 +83,7 @@ public class Topicos {
 		this.status = StatusTopicos.ENCERRADO;
 	}
 
-	public Topicos(DadosCadastroTopico dados, Usuario usuario) {
+	public Topicos(TopicoDTO dados, Usuario usuario) {
 		this.titulo = dados.titulo();
 		this.mensagem = dados.mensagem();
 		this.status = StatusTopicos.SEM_RESPOSTAS;

@@ -10,7 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import hub.forum.echo.domain.dto.DadosErros;
+import hub.forum.echo.domain.dto.DetalhamentoErros;
+import hub.forum.echo.domain.service.TopicoEncerradoResolvidoExcpetion;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -31,6 +32,16 @@ public class TratadorDeExceptions {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resposta não encontrada");
 	}
 	
+	@ExceptionHandler(UsuarioNaoEAutorException.class)
+	public ResponseEntity<?> tratarUsuarioNaoEhOAutor() {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário não é o autor do tópico");
+	}
+	
+	@ExceptionHandler(TopicoEncerradoResolvidoExcpetion.class)
+	public ResponseEntity<?> tratarTopicoResolvido() {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O tópico já foi resolvido ou foi encerrado");
+	}
+	
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<?> tratarErro404() {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -39,7 +50,7 @@ public class TratadorDeExceptions {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> tratarErro400(MethodArgumentNotValidException manv) {
 		var erros = manv.getFieldErrors();
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros.stream().map(DadosErros::new));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros.stream().map(DetalhamentoErros::new));
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)

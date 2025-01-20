@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hub.forum.echo.domain.dto.DadosCadastroLogin;
-import hub.forum.echo.domain.dto.DadosDetalhamentoUsuario;
-import hub.forum.echo.domain.dto.DadosTokenJwt;
+import hub.forum.echo.domain.dto.CadastroDTO;
+import hub.forum.echo.domain.dto.TokenJwtDTO;
+import hub.forum.echo.domain.dto.LoginDTO;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,17 +31,17 @@ public class UsuarioController {
 	
 	@PostMapping("/login")
 	@Operation(summary = "Login de usuário", description = "Login de usuário para acesso do fórum")
-	public ResponseEntity<?> login(@RequestBody @Valid DadosCadastroLogin dadosLogin){
+	public ResponseEntity<?> login(@RequestBody @Valid LoginDTO dadosLogin){
 		var tokenJWT = service.autenticacao(dadosLogin);
-		return ResponseEntity.status(HttpStatus.OK).body(new DadosTokenJwt(tokenJWT));
+		return ResponseEntity.status(HttpStatus.OK).body(new TokenJwtDTO(tokenJWT));
 	}
 	
 	@PostMapping("/cadastro")
 	@Operation(summary = "Cadastro de usuário", description = "Cadastro de novo usuário do fórum")
-	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroLogin dadosCadastro, UriComponentsBuilder uriBuilder){
+	public ResponseEntity<?> cadastro(@RequestBody @Valid CadastroDTO dadosCadastro, UriComponentsBuilder uriBuilder){
 		var usuario = service.criacaoUsuario(dadosCadastro);
 		var uri = pathUriService.criacaoPathUri(uriBuilder, usuario.getId());
-		return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
+		return ResponseEntity.created(uri).body("Usuário criado com sucesso!");
 	}
 
 }

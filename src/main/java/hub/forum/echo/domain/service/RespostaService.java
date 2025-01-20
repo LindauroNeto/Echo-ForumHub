@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
-import hub.forum.echo.domain.dto.DadosResposta;
+import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
+import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.model.Resposta;
 import hub.forum.echo.domain.model.StatusTopicos;
@@ -17,6 +17,7 @@ import hub.forum.echo.domain.repository.TopicosRepository;
 import hub.forum.echo.domain.repository.UsuarioRepository;
 import hub.forum.echo.infra.exception.RespostaNaoEncontradaException;
 import hub.forum.echo.infra.exception.TopicoNaoEncontradoException;
+import hub.forum.echo.infra.exception.UsuarioNaoEAutorException;
 import hub.forum.echo.infra.exception.UsuarioNaoEncontradoException;
 
 @Service
@@ -31,17 +32,15 @@ public class RespostaService {
 	@Autowired
 	private RespostaRepository repository;
 
-	public Resposta criarResposta(DadosResposta dadosResposta, Usuario usuario, Long idTopico) {
+	public Resposta criarResposta(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
 		var topicoO = validacaoTopico(idTopico);
+		var usuarioO = validacaoUsuario(usuario);
 		
-		var usuarioO = usuarioRepository.encontrarUsuario(usuario.getUsuario());
-		if (usuarioO.isEmpty()) {
-			throw new UsuarioNaoEncontradoException();
-		}
+		validarTopicoFinalizado(topicoO);
 		
 		topicoO.alterarStatus(StatusTopicos.EM_ABERTO);
 		
-		var resposta = new Resposta(dadosResposta, usuarioO.get(), topicoO);
+		var resposta = new Resposta(dadosResposta, usuarioO, topicoO);
 		repository.save(resposta);
 		return resposta;
 	}
@@ -61,7 +60,7 @@ public class RespostaService {
 		return respostaO.get();
 	}
 
-	public Resposta atualizarResposta(Long idTopico, Long idResposta, DadosAtualizacaoResposta dadosAtualizacao) {
+	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoRespostaDTO dadosAtualizacao) {
 		var resposta = verResposta(idTopico, idResposta);
 		resposta.atualizar(dadosAtualizacao);
 		repository.save(resposta);
@@ -72,7 +71,6 @@ public class RespostaService {
 		var resposta = verResposta(idTopico, idResposta);
 		resposta.excluir();
 		repository.save(resposta);
-		System.out.println(resposta.getAtivo());
 	}
 	
 	private Topicos validacaoTopico(Long idTopico) {
@@ -80,5 +78,36 @@ public class RespostaService {
 			throw new TopicoNaoEncontradoException();
 		}
 		return topicosRepository.getReferenceById(idTopico);
+	}
+	
+	private Usuario validacaoUsuario(Usuario usuario) {
+		var usuarioO = usuarioRepository.encontrarUsuario(usuario.getUsuario());
+		if (usuarioO.isEmpty()) {
+			throw new UsuarioNaoEncontradoException();
+		}
+		return usuarioO.get();
+	}
+	
+	private void validarTopicoFinalizado(Topicos topico) {
+		if (topico.getStatus() == StatusTopicos.RESOLVIDO || topico.getStatus() == StatusTopicos.ENCERRADO) {
+			throw new TopicoEncerradoResolvidoExcpetion();
+		}
+	}
+
+	public Resposta finalizarTopico(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
+		var topico = validacaoTopico(idTopico);
+		var usuarioO = validacaoUsuario(usuario);
+		
+		validarTopicoFinalizado(topico);
+		
+		if (!(topico.getAutor().getUsuario() == usuarioO.getUsuario())) {
+			throw new UsuarioNaoEAutorException();
+		}
+		
+		topico.alterarStatus(StatusTopicos.RESOLVIDO);
+		
+		var resposta = new Resposta(dadosResposta, usuarioO, topico);
+		repository.save(resposta);
+		return resposta;
 	}
 }

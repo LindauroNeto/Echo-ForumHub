@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hub.forum.echo.domain.dto.DadosAtualizacaoTopico;
-import hub.forum.echo.domain.dto.DadosCadastroTopico;
+import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.TopicoDTO;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
@@ -46,7 +46,7 @@ public class TopicosController {
 
 	@PostMapping
 	@Operation(summary = "Criação de tópico", description = "Cadastro de novo tópico")
-	public ResponseEntity<?> cadastro(@RequestBody @Valid DadosCadastroTopico dadosCadastroTopico, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
+	public ResponseEntity<?> cadastro(@RequestBody @Valid TopicoDTO dadosCadastroTopico, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		var usuario = atrelamento.obterUsuario(request);
 		var topico = service.criacaoTopico(dadosCadastroTopico, usuario);
 		var uri = pathUriService.criacaoPathUri(uriBuilder, topico.getId());
@@ -69,17 +69,15 @@ public class TopicosController {
 	
 	@PutMapping("/{idTopico}")
 	@Operation(summary = "Atualização de tópico", description = "Atualização de tópico cadastrado")
-	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid DadosAtualizacaoTopico dadosAtualizacaoTopico) {
-		var topico = service.verTopicoAtivo(idTopico);
-		topico.atualizar(dadosAtualizacaoTopico);
+	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopicoDTO dadosAtualizacaoTopico) {
+		var topico = service.atualizarTopico(idTopico, dadosAtualizacaoTopico);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}
 	
 	@DeleteMapping("/{idTopico}")
 	@Operation(summary = "Excluir tópico", description = "Exclusão lógica de tópico")
 	public ResponseEntity<?> deletar(@PathVariable Long idTopico) {
-		var topico = service.verTopicoAtivo(idTopico);
-		topico.excluir();
+		service.excluirTopico(idTopico);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

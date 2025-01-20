@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import hub.forum.echo.domain.dto.DadosAtualizacaoResposta;
-import hub.forum.echo.domain.dto.DadosResposta;
+import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
+import hub.forum.echo.domain.dto.RespostaDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,14 +47,14 @@ public class Resposta {
 	@ManyToOne
 	private Topicos topico;
 	
-	public Resposta(DadosResposta dados, Usuario usuario, Topicos topico) {
+	public Resposta(RespostaDTO dados, Usuario usuario, Topicos topico) {
 		this.mensagem = dados.mensagem();
 		this.autor = usuario;
 		this.topico = topico;
 		this.ativo = true;
 	}
 
-	public void atualizar(DadosAtualizacaoResposta dadosAtualizacao) {
+	public void atualizar(AtualizacaoRespostaDTO dadosAtualizacao) {
 		if (dadosAtualizacao.mensagem() != null) {
 			this.mensagem = dadosAtualizacao.mensagem();
 		}

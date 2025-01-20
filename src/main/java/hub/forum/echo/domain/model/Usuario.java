@@ -33,10 +33,16 @@ public class Usuario implements UserDetails {
 	private Long id;
 	
 	@Column(nullable = false, unique = true)
+	private String email;
+	
+	@Column(nullable = false, unique = true)
 	private String usuario;
 	
 	@Column(nullable = false)
 	private String senha;
+	
+	@Column(nullable = false)
+	private Boolean ativo;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -73,9 +79,11 @@ public class Usuario implements UserDetails {
 		return true;
 	}
 
-	public Usuario(String usuario, String senha) {
+	public Usuario(String email, String usuario, String senha) {
+		this.email = email;
 		this.usuario = usuario;
 		this.senha = senha;
+		this.ativo = true;
 	}
 	
 
