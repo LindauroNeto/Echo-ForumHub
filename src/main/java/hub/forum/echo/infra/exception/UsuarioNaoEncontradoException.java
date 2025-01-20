@@ -6,5 +6,10 @@ public class UsuarioNaoEncontradoException extends RuntimeException {
 	public UsuarioNaoEncontradoException() {
 		super();
 	}
+	
+	@Override
+	public String getMessage() {
+		return "Usuário não encontrado";
+	}
 
 }

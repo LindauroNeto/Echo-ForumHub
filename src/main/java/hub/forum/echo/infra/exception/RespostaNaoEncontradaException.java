@@ -6,5 +6,10 @@ public class RespostaNaoEncontradaException extends RuntimeException {
 	public RespostaNaoEncontradaException() {
 		super();
 	}
+	
+	@Override
+	public String getMessage() {
+		return "Resposta não encontrada";
+	}
 
 }

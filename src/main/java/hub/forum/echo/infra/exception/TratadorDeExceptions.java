@@ -17,28 +17,28 @@ import jakarta.persistence.EntityNotFoundException;
 public class TratadorDeExceptions {
 	
 	@ExceptionHandler(TopicoNaoEncontradoException.class)
-	public ResponseEntity<?> tratarTopicoNaoEncontrado() {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+	public ResponseEntity<?> tratarTopicoNaoEncontrado(TopicoNaoEncontradoException tnee) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(tnee.getMessage());
 	}
 	
 	@ExceptionHandler(UsuarioNaoEncontradoException.class)
-	public ResponseEntity<?> tratarUsuarioNaoEncontrado() {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+	public ResponseEntity<?> tratarUsuarioNaoEncontrado(UsuarioNaoEncontradoException usnee) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(usnee.getMessage());
 	}
 	
 	@ExceptionHandler(RespostaNaoEncontradaException.class)
-	public ResponseEntity<?> tratarRespostaNaoEncontrada() {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resposta não encontrada");
+	public ResponseEntity<?> tratarRespostaNaoEncontrada(RespostaNaoEncontradaException rnee) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rnee.getMessage());
 	}
 	
-	@ExceptionHandler(UsuarioNaoEAutorException.class)
-	public ResponseEntity<?> tratarUsuarioNaoEhOAutor() {
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O usuário não é o autor do tópico");
+	@ExceptionHandler(UsuarioNaoEhAutorException.class)
+	public ResponseEntity<?> tratarUsuarioNaoEhOAutor(UsuarioNaoEhAutorException uneae) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(uneae.getMessage());
 	}
 	
 	@ExceptionHandler(TopicoEncerradoResolvidoExcpetion.class)
-	public ResponseEntity<?> tratarTopicoResolvido() {
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("O tópico já foi resolvido ou foi encerrado");
+	public ResponseEntity<?> tratarTopicoResolvido(TopicoEncerradoResolvidoExcpetion tere) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(tere.getMessage());
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)

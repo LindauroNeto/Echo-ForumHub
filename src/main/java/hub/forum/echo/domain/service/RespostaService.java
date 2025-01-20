@@ -13,7 +13,7 @@ import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
 import hub.forum.echo.infra.exception.RespostaNaoEncontradaException;
-import hub.forum.echo.infra.exception.UsuarioNaoEAutorException;
+import hub.forum.echo.infra.exception.UsuarioNaoEhAutorException;
 
 @Service
 public class RespostaService {
@@ -72,7 +72,7 @@ public class RespostaService {
 		validador.validarTopicoFinalizado(topico);
 		
 		if (!(topico.getAutor().getUsuario() == usuarioO.getUsuario())) {
-			throw new UsuarioNaoEAutorException();
+			throw new UsuarioNaoEhAutorException();
 		}
 		
 		topico.alterarStatus(StatusTopicos.RESOLVIDO);

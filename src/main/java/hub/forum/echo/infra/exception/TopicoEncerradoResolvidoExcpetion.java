@@ -6,5 +6,10 @@ public class TopicoEncerradoResolvidoExcpetion extends RuntimeException {
 	public TopicoEncerradoResolvidoExcpetion() {
 		super();
 	}
+	
+	@Override
+	public String getMessage() {
+		return "O tópico já foi resolvido ou foi encerrado";
+	}
 
 }

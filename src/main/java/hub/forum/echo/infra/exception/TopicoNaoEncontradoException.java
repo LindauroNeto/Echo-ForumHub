@@ -7,4 +7,8 @@ public class TopicoNaoEncontradoException extends RuntimeException {
 		super();
 	}
 
+	@Override
+	public String getMessage() {
+		return "Tópico não encontrado";
+	}
 }
