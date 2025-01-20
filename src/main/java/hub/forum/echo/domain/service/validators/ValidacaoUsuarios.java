@@ -30,7 +30,7 @@ public class ValidacaoUsuarios {
 		return repository.getReferenceById(usuarioO.get().getId());
 	}
 	
-	public void validacaoUsuarioEUsuario(Usuario usuario1, Usuario usuario2) {
+	public void validacaoUsuarioUsuario(Usuario usuario1, Usuario usuario2) {
 		if (usuario1 != usuario2) {
 			throw new UsuarioIncompativelException();
 		}

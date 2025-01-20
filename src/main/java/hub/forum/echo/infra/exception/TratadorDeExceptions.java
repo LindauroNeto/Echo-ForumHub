@@ -38,7 +38,7 @@ public class TratadorDeExceptions {
 	
 	@ExceptionHandler(UsuarioIncompativelException.class)
 	public ResponseEntity<?> tratarTopicoResolvido(UsuarioIncompativelException uie) {
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(uie.getMessage());
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(uie.getMessage());
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
@@ -64,7 +64,7 @@ public class TratadorDeExceptions {
 	
 	@ExceptionHandler(AuthenticationException.class)
 	public ResponseEntity<?> tratarBadAuthentication() {
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Erro autenticação");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Erro de autenticação");
 	}
 	
 	@ExceptionHandler(AccessDeniedException.class)

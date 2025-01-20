@@ -51,10 +51,10 @@ public class UsuarioService {
 	}
 	
 	public void excluirUsuario(Long id, HttpServletRequest request) {
-		var usuarioToken = atrelamento.obterUsuario(request);
 		var usuarioId = validacao.validacaoUsuarioPorId(id);
+		var usuarioToken = atrelamento.obterUsuario(request);
 		
-		validacao.validacaoUsuarioEUsuario(usuarioToken, usuarioId);
+		validacao.validacaoUsuarioUsuario(usuarioToken, usuarioId);
 		usuarioId.excluir();
 		repository.save(usuarioId);
 	}

@@ -66,7 +66,7 @@ public class TopicosService {
 		var usuarioO = validacaoUsuarios.validacaoUsuarioPorNome(usuario.getUsuario());
 		
 		validacaoTopicos.validacaoTopicoFinalizado(topico);
-		validacaoUsuarios.validacaoUsuarioEUsuario(topico.getAutor(), usuarioO);
+		validacaoUsuarios.validacaoUsuarioUsuario(topico.getAutor(), usuarioO);
 		
 		topico.alterarStatus(StatusTopicos.RESOLVIDO);
 		
