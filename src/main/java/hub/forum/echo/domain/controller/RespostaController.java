@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
-import hub.forum.echo.domain.dto.RespostaDTO;
-import hub.forum.echo.domain.dto.DetalhamentoFinalizacaoTopico;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
-import hub.forum.echo.domain.dto.DetalhamentoRespostaSimples;
+import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.RespostaService;
@@ -82,12 +80,4 @@ public class RespostaController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
-	@PutMapping("/finalizar")
-	@Operation(summary = "Finalizar tópico", description = "Envio de resposta final do tópico")
-	public ResponseEntity<?> finalizar(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, HttpServletRequest request) {
-		var usuarioAtrelado = atrelamento.obterUsuario(request);
-		var resposta = service.finalizarTopico(dadosResposta, usuarioAtrelado, idTopico);
-		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoFinalizacaoTopico(resposta.getTopico(), new DetalhamentoRespostaSimples(resposta)));
-	}
-
 }

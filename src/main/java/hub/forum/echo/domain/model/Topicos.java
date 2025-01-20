@@ -80,7 +80,7 @@ public class Topicos {
 	
 	public void excluir() {
 		this.topicoAtivo = false;
-		this.status = StatusTopicos.ENCERRADO;
+		alterarStatus(StatusTopicos.ENCERRADO);
 	}
 
 	public Topicos(TopicoDTO dados, Usuario usuario) {

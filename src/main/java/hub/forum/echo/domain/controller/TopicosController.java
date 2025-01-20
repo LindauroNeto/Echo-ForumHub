@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.DetalhamentoFinalizacaoTopico;
+import hub.forum.echo.domain.dto.DetalhamentoRespostaSimples;
 import hub.forum.echo.domain.dto.TopicoDTO;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
+import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.service.AtrelarmentoService;
 import hub.forum.echo.domain.service.PathUriService;
+import hub.forum.echo.domain.service.RespostaService;
 import hub.forum.echo.domain.service.TopicosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,6 +47,9 @@ public class TopicosController {
 	
 	@Autowired
 	private AtrelarmentoService atrelamento;
+	
+	@Autowired
+	private RespostaService respostaService;
 
 	@PostMapping
 	@Operation(summary = "Criação de tópico", description = "Cadastro de novo tópico")
@@ -79,5 +86,13 @@ public class TopicosController {
 	public ResponseEntity<?> deletar(@PathVariable Long idTopico) {
 		service.excluirTopico(idTopico);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@PutMapping("/{idTopico}/finalizar")
+	@Operation(summary = "Finalizar tópico", description = "Envio de resposta final do tópico")
+	public ResponseEntity<?> finalizar(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		var resposta = respostaService.finalizarTopico(dadosResposta, usuarioAtrelado, idTopico);
+		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoFinalizacaoTopico(resposta.getTopico(), new DetalhamentoRespostaSimples(resposta)));
 	}
 }
