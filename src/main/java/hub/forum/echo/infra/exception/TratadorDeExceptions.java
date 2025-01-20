@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import hub.forum.echo.domain.dto.DetalhamentoErros;
-import hub.forum.echo.domain.service.UsuarioIncompativelException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice

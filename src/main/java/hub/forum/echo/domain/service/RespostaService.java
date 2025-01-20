@@ -5,13 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
+import hub.forum.echo.domain.dto.AtualizacaoResposta;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.model.Resposta;
 import hub.forum.echo.domain.model.StatusTopicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
+import hub.forum.echo.domain.service.validacao.ValidacaoTopicos;
+import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
 import hub.forum.echo.infra.exception.RespostaNaoEncontradaException;
 
 @Service
@@ -21,13 +23,16 @@ public class RespostaService {
 	private RespostaRepository repository;
 	
 	@Autowired
-	private ValidacaoTopicosUsuariosService validador;
+	private ValidacaoTopicos validadorTopicos;
+	
+	@Autowired
+	private ValidacaoUsuarios validadorUsuarios;
 
 	public Resposta criarResposta(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
-		var topico = validador.validacaoTopicoPorId(idTopico);
-		var usuarioO = validador.validacaoUsuarioPorNome(usuario.getUsuario());
+		var topico = validadorTopicos.validacaoTopicoPorId(idTopico);
+		var usuarioO = validadorUsuarios.validacaoUsuarioPorNome(usuario.getUsuario());
 		
-		validador.validacaoTopicoFinalizado(topico);
+		validadorTopicos.validacaoTopicoFinalizado(topico);
 		
 		topico.alterarStatus(StatusTopicos.EM_ABERTO);
 		
@@ -37,12 +42,12 @@ public class RespostaService {
 	}
 
 	public Page<DetalhamentoResposta> listarRespostas(Long id, Pageable paginacao) {
-		var topicoId = validador.validacaoTopicoPorId(id);
+		var topicoId = validadorTopicos.validacaoTopicoPorId(id);
 		return repository.findAllByTopicoIdAndAtivoTrue(topicoId.getId(), paginacao).map(DetalhamentoResposta::new);
 	}
 
 	public Resposta verResposta(Long id, Long idResposta) {
-		var topicoId = validador.validacaoTopicoPorId(id);
+		var topicoId = validadorTopicos.validacaoTopicoPorId(id);
 		
 		var respostaO = repository.findByIdAndTopicoIdAndAtivoTrue(idResposta, topicoId.getId());
 		if (respostaO.isEmpty()) {
@@ -51,7 +56,7 @@ public class RespostaService {
 		return respostaO.get();
 	}
 
-	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoRespostaDTO dadosAtualizacao) {
+	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao) {
 		var resposta = verResposta(idTopico, idResposta);
 		resposta.atualizar(dadosAtualizacao);
 		repository.save(resposta);

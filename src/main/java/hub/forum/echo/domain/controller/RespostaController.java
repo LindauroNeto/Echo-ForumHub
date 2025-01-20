@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hub.forum.echo.domain.dto.AtualizacaoRespostaDTO;
+import hub.forum.echo.domain.dto.AtualizacaoResposta;
 import hub.forum.echo.domain.dto.DetalhamentoResposta;
 import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.service.AtrelarmentoService;
@@ -68,7 +68,7 @@ public class RespostaController {
 	
 	@PutMapping("/{idResposta}")
 	@Operation(summary = "Atualização de mensagem da resposta", description = "Alteração da mensagem da resposta. Para isso é necessário informar o id do tópico e o id da resposta")
-	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid AtualizacaoRespostaDTO dadosAtualizacao) {
+	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid AtualizacaoResposta dadosAtualizacao) {
 		var resposta = service.atualizarResposta(idTopico, idResposta, dadosAtualizacao);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoResposta(resposta));
 	}

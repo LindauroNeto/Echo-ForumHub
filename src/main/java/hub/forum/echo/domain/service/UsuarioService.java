@@ -10,6 +10,7 @@ import hub.forum.echo.domain.dto.CadastroDTO;
 import hub.forum.echo.domain.dto.LoginDTO;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.UsuarioRepository;
+import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -28,7 +29,7 @@ public class UsuarioService {
 	private TokenService tokenService;
 	
 	@Autowired
-	private ValidacaoTopicosUsuariosService validacao;
+	private ValidacaoUsuarios validacao;
 	
 	@Autowired
 	private AtrelarmentoService atrelamento;

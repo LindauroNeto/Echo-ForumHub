@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.AtualizacaoTopico;
 import hub.forum.echo.domain.dto.TopicoDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -67,7 +67,7 @@ public class Topicos {
 	@Column(name = "respostas")
 	private List<Resposta> respostas = new ArrayList<>();
 	
-	public void atualizar(AtualizacaoTopicoDTO dados) {
+	public void atualizar(AtualizacaoTopico dados) {
 		if (dados.titulo() != null) {
 			this.titulo = dados.titulo();
 		}

@@ -1,4 +1,4 @@
-package hub.forum.echo.domain.service;
+package hub.forum.echo.infra.exception;
 
 public class UsuarioIncompativelException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
