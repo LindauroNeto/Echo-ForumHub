@@ -17,6 +17,7 @@ import hub.forum.echo.domain.dto.TokenJwtDTO;
 import hub.forum.echo.domain.service.PathUriService;
 import hub.forum.echo.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -48,6 +49,7 @@ public class UsuarioController {
 	}
 	
 	@DeleteMapping("/excluir/{id}")
+	@SecurityRequirement(name = "bearer-key")
 	@Operation(summary = "Exclusão de usuário", description = "Excluir usuário do banco de contas, a operação só pode ser realizada somente pelo próprio usuário")
 	public ResponseEntity<?> excluir(@PathVariable Long id, HttpServletRequest request){
 		service.excluirUsuario(id, request);

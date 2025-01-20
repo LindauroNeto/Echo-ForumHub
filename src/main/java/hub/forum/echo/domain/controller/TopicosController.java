@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.AtualizacaoTopico;
 import hub.forum.echo.domain.dto.DetalhamentoFinalizacaoTopico;
 import hub.forum.echo.domain.dto.DetalhamentoRespostaSimples;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
@@ -72,7 +72,7 @@ public class TopicosController {
 	
 	@PutMapping("/{idTopico}")
 	@Operation(summary = "Atualização de tópico", description = "Atualização de tópico cadastrado")
-	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopicoDTO dadosAtualizacaoTopico) {
+	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = service.atualizarTopico(idTopico, dadosAtualizacaoTopico);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}

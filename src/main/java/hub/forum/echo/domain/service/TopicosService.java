@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import hub.forum.echo.domain.dto.AtualizacaoTopicoDTO;
+import hub.forum.echo.domain.dto.AtualizacaoTopico;
 import hub.forum.echo.domain.dto.DetalhamentoTopicos;
 import hub.forum.echo.domain.dto.RespostaDTO;
 import hub.forum.echo.domain.dto.TopicoDTO;
@@ -15,6 +15,8 @@ import hub.forum.echo.domain.model.Topicos;
 import hub.forum.echo.domain.model.Usuario;
 import hub.forum.echo.domain.repository.RespostaRepository;
 import hub.forum.echo.domain.repository.TopicosRepository;
+import hub.forum.echo.domain.service.validacao.ValidacaoTopicos;
+import hub.forum.echo.domain.service.validacao.ValidacaoUsuarios;
 import hub.forum.echo.infra.exception.UsuarioNaoEhAutorException;
 
 @Service
@@ -27,7 +29,10 @@ public class TopicosService {
 	private RespostaRepository respostaRepository;
 	
 	@Autowired
-	private ValidacaoTopicosUsuariosService validacao;
+	private ValidacaoTopicos validacaoTopicos;
+	
+	@Autowired
+	private ValidacaoUsuarios validacaoUsuarios;
 	
 	public Topicos criacaoTopico(TopicoDTO dadosCadastroTopico, Usuario usuario) {
 		var topico = new Topicos(dadosCadastroTopico, usuario);
@@ -40,11 +45,11 @@ public class TopicosService {
 	}
 	
 	public Topicos verTopicoAtivo(Long id) {
-		var topico = validacao.validacaoTopicoPorId(id);
+		var topico = validacaoTopicos.validacaoTopicoPorId(id);
 		return topico;
 	}
 
-	public Topicos atualizarTopico(Long idTopico, AtualizacaoTopicoDTO dadosAtualizacaoTopico) {
+	public Topicos atualizarTopico(Long idTopico, AtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = verTopicoAtivo(idTopico);
 		topico.atualizar(dadosAtualizacaoTopico);
 		repository.save(topico);
@@ -58,10 +63,10 @@ public class TopicosService {
 	}
 	
 	public Resposta finalizarTopico(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
-		var topico = validacao.validacaoTopicoPorId(idTopico);
-		var usuarioO = validacao.validacaoUsuarioPorNome(usuario.getUsuario());
+		var topico = validacaoTopicos.validacaoTopicoPorId(idTopico);
+		var usuarioO = validacaoUsuarios.validacaoUsuarioPorNome(usuario.getUsuario());
 		
-		validacao.validacaoTopicoFinalizado(topico);
+		validacaoTopicos.validacaoTopicoFinalizado(topico);
 		
 		if (!(topico.getAutor().getUsuario() == usuarioO.getUsuario())) {
 			throw new UsuarioNaoEhAutorException();
