@@ -13,7 +13,7 @@ public class ValidacaoResposta {
 	@Autowired
 	private RespostaRepository repository;
 	
-	public Resposta validacaoTopicoPorIds(Long idTopico, Long idResposta) {
+	public Resposta validacaoRespostaTopicoPorIds(Long idTopico, Long idResposta) {
 		var respostaO = repository.findByIdAndTopicoIdAndAtivoTrue(idResposta, idTopico);
 		if (respostaO.isEmpty()) {
 			throw new RespostaNaoEncontradaException();

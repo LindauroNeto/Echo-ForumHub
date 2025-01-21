@@ -51,7 +51,7 @@ public class RespostaService {
 
 	public Resposta verResposta(Long id, Long idResposta) {
 		var topicoId = validadorTopicos.validacaoTopicoPorId(id);
-		return validadorResposta.validacaoTopicoPorIds(idResposta, topicoId.getId());
+		return validadorResposta.validacaoRespostaTopicoPorIds(idResposta, topicoId.getId());
 	}
 
 	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao) {

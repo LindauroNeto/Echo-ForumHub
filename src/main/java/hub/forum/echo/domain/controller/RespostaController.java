@@ -48,9 +48,7 @@ public class RespostaController {
 	public ResponseEntity<?> responder(@PathVariable Long idTopico, @RequestBody @Valid RespostaDTO dadosResposta, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		var usuarioAtrelado = atrelamento.obterUsuario(request);
 		var resposta = service.criarResposta(dadosResposta, usuarioAtrelado, idTopico);
-		var uriTopico = String.format("topicos/%d/", idTopico);
-		var uri = pathUriService.criacaoPathUri(uriBuilder, resposta.getId(), (uriTopico + "resposta"));
-		System.out.println(uri);
+		var uri = pathUriService.criacaoPathUri(uriBuilder, resposta.getId(), String.format("topicos/%d/resposta", idTopico));
 		return ResponseEntity.created(uri).body(new DetalhamentoResposta(resposta));
 	}
 	
