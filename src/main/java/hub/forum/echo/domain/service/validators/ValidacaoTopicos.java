@@ -15,6 +15,14 @@ public class ValidacaoTopicos {
 	@Autowired
 	private TopicosRepository repository;
 	
+	
+	public Topicos validacaoTopicoId(Long id) {
+		var topicoO = repository.findById(id);
+		if (topicoO.isEmpty()) {
+			throw new TopicoNaoEncontradoException();
+		}
+		return repository.getReferenceById(topicoO.get().getId());
+	}
 	public Topicos validacaoTopicoPorId(Long idTopico) {
 		var topicoO = repository.findByIdAndTopicoAtivoTrue(idTopico);
 		if (topicoO.isEmpty()) {

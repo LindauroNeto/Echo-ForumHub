@@ -43,6 +43,11 @@ public class TopicosService {
 		return repository.findAllByTopicoAtivoTrue(paginacao).map(DetalhamentoTopicos::new);
 	}
 	
+	public Topicos verTopico(Long id) {
+		var topico = validacaoTopicos.validacaoTopicoId(id);
+		return topico;
+	}
+	
 	public Topicos verTopicoAtivo(Long id) {
 		var topico = validacaoTopicos.validacaoTopicoPorId(id);
 		return topico;

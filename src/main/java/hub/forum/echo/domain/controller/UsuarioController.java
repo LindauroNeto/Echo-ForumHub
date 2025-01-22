@@ -67,7 +67,7 @@ public class UsuarioController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "Exclusão realizada com sucesso"),
 			@ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
-			@ApiResponse(responseCode = "403", description = "Sem token para a requisição ou expirado"),
+			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "404", description = "Usuário não existe ou já foi excluído"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
