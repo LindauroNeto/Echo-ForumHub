@@ -8,23 +8,22 @@ import hub.forum.echo.domain.model.Topicos;
 
 public record DetalhamentoFinalizacaoTopico(
 		Long idTopico,
-		String statusTopico,
 		String tituloDoTopico,
+		String status,
 		String mensagemTopico,
 		@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
 		LocalDateTime dataDeCriacao,
 		String autor,
 		String curso,
-		
-		DetalhamentoRespostaSimples respostaFinal
+		DetalhamentoRespostaSimples mensagemFinal
 		
 		) {
 	
 	public DetalhamentoFinalizacaoTopico(Topicos topicos, DetalhamentoRespostaSimples resposta) {
 			this(
 				topicos.getId(),
-				topicos.getStatus().getMensagem().toUpperCase(),
 				topicos.getTitulo(),
+				topicos.getStatus().getMensagem().toUpperCase(),
 				topicos.getMensagem(),
 				topicos.getData(),
 				topicos.getAutor().getUsuario(),

@@ -10,6 +10,7 @@ public record DetalhamentoTopicos(
 		Long id,
 		String titulo,
 		String mensagem,
+		String status,
 		
 		@JsonFormat(pattern = "HH:mm dd/MM/yyyy")
 		LocalDateTime data,
@@ -20,7 +21,7 @@ public record DetalhamentoTopicos(
 		) {
 	
 	public DetalhamentoTopicos(Topicos topicos) {
-		this(topicos.getId(), topicos.getTitulo(), topicos.getMensagem(), topicos.getData(), topicos.getAutor().getUsuario(), topicos.getCurso());
+		this(topicos.getId(), topicos.getTitulo(), topicos.getMensagem(), topicos.getStatus().getMensagem().toUpperCase(), topicos.getData(), topicos.getAutor().getUsuario(), topicos.getCurso());
 	}
 
 }

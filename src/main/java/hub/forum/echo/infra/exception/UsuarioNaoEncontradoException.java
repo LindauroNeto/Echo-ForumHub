@@ -9,7 +9,7 @@ public class UsuarioNaoEncontradoException extends RuntimeException {
 	
 	@Override
 	public String getMessage() {
-		return "Usuário não encontrado";
+		return "Usuário não encontrado ou excluído do sistema";
 	}
 
 }

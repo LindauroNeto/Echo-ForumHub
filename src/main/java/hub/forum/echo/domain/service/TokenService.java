@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -16,7 +17,8 @@ import hub.forum.echo.domain.model.Usuario;
 @Service
 public class TokenService {
 	
-	private String secret = System.getenv("Secret");
+	@Value("${echo.security.token.secret}")
+	private String secret;
 	
 	public String gerarToken(Usuario usuario) {
 		try {
