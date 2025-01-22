@@ -90,7 +90,7 @@ public class RespostaController {
 	@PutMapping("/{idResposta}")
 	@Operation(summary = "Atualização de mensagem da resposta", description = "Alteração da mensagem da resposta. Para isso é necessário informar o id do tópico e o id da resposta")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "201", description = "Resposta atualizada"),
+			@ApiResponse(responseCode = "200", description = "Resposta atualizada"),
 			@ApiResponse(responseCode = "404", description = "Resposta ou Tópico não encontrado"),
 			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),

@@ -94,8 +94,8 @@ public class TopicosController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Tópico atualizado"),
 			@ApiResponse(responseCode = "400", description = "Preenchimento inválido dos campos"),
-			@ApiResponse(responseCode = "404", description = "Tópico não encontrado ou encerrado"),
-			@ApiResponse(responseCode = "403", description = "Token inválido"),
+			@ApiResponse(responseCode = "404", description = "Tópico não encontrado ou excluído"),
+			@ApiResponse(responseCode = "403", description = "Token inválido / Tópico já encerrado"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
 	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopico dadosAtualizacaoTopico) {

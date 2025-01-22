@@ -44,7 +44,7 @@ public class TopicosService {
 	}
 	
 	public Topicos verTopico(Long id) {
-		var topico = validacaoTopicos.validacaoTopicoId(id);
+		var topico = validacaoTopicos.validacaoTopico(id);
 		return topico;
 	}
 	
@@ -55,6 +55,7 @@ public class TopicosService {
 
 	public Topicos atualizarTopico(Long idTopico, AtualizacaoTopico dadosAtualizacaoTopico) {
 		var topico = verTopicoAtivo(idTopico);
+		validacaoTopicos.validacaoTopicoFinalizado(topico);
 		topico.atualizar(dadosAtualizacaoTopico);
 		repository.save(topico);
 		return topico;

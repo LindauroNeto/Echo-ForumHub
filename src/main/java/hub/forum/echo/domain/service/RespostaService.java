@@ -56,6 +56,7 @@ public class RespostaService {
 
 	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao) {
 		var resposta = verResposta(idTopico, idResposta);
+		validadorTopicos.validacaoTopicoFinalizado(resposta.getTopico());
 		resposta.atualizar(dadosAtualizacao);
 		repository.save(resposta);
 		return resposta;

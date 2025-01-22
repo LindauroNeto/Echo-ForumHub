@@ -15,8 +15,7 @@ public class ValidacaoTopicos {
 	@Autowired
 	private TopicosRepository repository;
 	
-	
-	public Topicos validacaoTopicoId(Long id) {
+	public Topicos validacaoTopico(Long id) {
 		var topicoO = repository.findById(id);
 		if (topicoO.isEmpty()) {
 			throw new TopicoNaoEncontradoException();
@@ -33,10 +32,10 @@ public class ValidacaoTopicos {
 	
 	public void validacaoTopicoFinalizado(Topicos topico) {
 		if (topico.getStatus() == StatusTopicos.RESOLVIDO) {
-			throw new TopicoFinalizadoException("O tópico já foi resolvido e não aceita mais respostas");
+			throw new TopicoFinalizadoException("O tópico foi resolvido (estando fechado para adições/alterações)");
 		}
 		if (topico.getStatus() == StatusTopicos.ENCERRADO) {
-			throw new TopicoFinalizadoException("O tópico foi encerrado e não recebe mais respotas");
+			throw new TopicoFinalizadoException("O tópico foi encerrado (estando fechado para adições/alterações)");
 		}
 		
 	}
