@@ -23,7 +23,7 @@ public class SpringDocConfigurations {
 						.bearerFormat("JWT")))
 				.info(new Info()
 						.title("Echo Forum Hub")
-						.description("API REST do Echo Forum Hub, contendo as funcionalidades de cadastro de tópicos e envio de respostas.")
+						.description("API REST do Echo Forum Hub, contendo as funcionalidades de cadastro de tópicos, envio de respostas e criação de usuários.")
 						.contact(new Contact()
 								.name("Lindauro Neto")
 								.url("https://github.com/LindauroNeto"))

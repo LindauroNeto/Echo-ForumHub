@@ -79,9 +79,9 @@ public class Usuario implements UserDetails {
 		return ativo;
 	}
 
-	public Usuario(String email, String usuario, String senha) {
-		this.email = email;
+	public Usuario(String usuario, String email, String senha) {
 		this.usuario = usuario;
+		this.email = email;
 		this.senha = senha;
 		this.ativo = true;
 	}

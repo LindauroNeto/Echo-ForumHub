@@ -2,6 +2,8 @@ package hub.forum.echo.domain.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,5 +16,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	Optional<Usuario> findByUsuarioAndAtivoTrue(String usuario);
 
 	Optional<Usuario> findByIdAndAtivoTrue(Long id);
+
+	Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
 
 }
