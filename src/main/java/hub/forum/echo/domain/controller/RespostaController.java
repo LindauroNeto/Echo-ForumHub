@@ -91,12 +91,14 @@ public class RespostaController {
 	@Operation(summary = "Atualização de mensagem da resposta", description = "Alteração da mensagem da resposta. Para isso é necessário informar o id do tópico e o id da resposta")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Resposta atualizada"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autorizado para atualizar a resposta"),
 			@ApiResponse(responseCode = "404", description = "Resposta ou Tópico não encontrado"),
 			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
-	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid AtualizacaoResposta dadosAtualizacao) {
-		var resposta = service.atualizarResposta(idTopico, idResposta, dadosAtualizacao);
+	public ResponseEntity<?> atualizarResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, @RequestBody @Valid AtualizacaoResposta dadosAtualizacao, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		var resposta = service.atualizarResposta(idTopico, idResposta, dadosAtualizacao, usuarioAtrelado);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoResposta(resposta));
 	}
 	
@@ -104,12 +106,14 @@ public class RespostaController {
 	@Operation(summary = "Excluir resposta", description = "Exclusão da resposta. Sendo necessário informar o id do tópico e o id da resposta")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "Resposta excluída"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autorizado para excluir a resposta"),
 			@ApiResponse(responseCode = "404", description = "Resposta ou Tópico não encontrado"),
 			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
-	public ResponseEntity<?> excluirResposta(@PathVariable Long idTopico, @PathVariable Long idResposta) {
-		service.excluirResposta(idTopico, idResposta);
+	public ResponseEntity<?> excluirResposta(@PathVariable Long idTopico, @PathVariable Long idResposta, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		service.excluirResposta(idTopico, idResposta, usuarioAtrelado);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	

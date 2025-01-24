@@ -54,18 +54,25 @@ public class RespostaService {
 		return validadorResposta.validacaoRespostaTopicoPorIds(topicoId.getId(), idResposta);
 	}
 
-	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao) {
-		var resposta = verResposta(idTopico, idResposta);
-		validadorTopicos.validacaoTopicoFinalizado(resposta.getTopico());
+	public Resposta atualizarResposta(Long idTopico, Long idResposta, AtualizacaoResposta dadosAtualizacao, Usuario usuario) {
+		var resposta = confirmacaoUsuarioRequisicao(idTopico, idResposta, usuario);
+		
 		resposta.atualizar(dadosAtualizacao);
 		repository.save(resposta);
 		return resposta;
 	}
 
-	public void excluirResposta(Long idTopico, Long idResposta) {
-		var resposta = verResposta(idTopico, idResposta);
+	public void excluirResposta(Long idTopico, Long idResposta, Usuario usuario) {
+		var resposta = confirmacaoUsuarioRequisicao(idTopico, idResposta, usuario);
 		resposta.excluir();
 		repository.save(resposta);
+	}
+	
+	private Resposta confirmacaoUsuarioRequisicao(Long idTopico, Long idResposta, Usuario usuario) {
+		var resposta = verResposta(idTopico, idResposta);
+		validadorUsuarios.validacaoUsuarioUsuario(resposta.getAutor(), usuario);
+		validadorTopicos.validacaoTopicoFinalizado(resposta.getTopico());
+		return resposta;
 	}
 	
 }
