@@ -34,7 +34,7 @@ public class ValidacaoTopicos {
 		if (topico.getStatus() == StatusTopicos.RESOLVIDO) {
 			throw new TopicoFinalizadoException("O tópico foi resolvido (estando fechado para adições/alterações)");
 		}
-		if (topico.getStatus() == StatusTopicos.ENCERRADO) {
+		if (topico.getStatus() == StatusTopicos.EXCLUIDO) {
 			throw new TopicoFinalizadoException("O tópico foi encerrado (estando fechado para adições/alterações)");
 		}
 		

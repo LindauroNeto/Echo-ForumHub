@@ -53,32 +53,38 @@ public class TopicosService {
 		return topico;
 	}
 
-	public Topicos atualizarTopico(Long idTopico, AtualizacaoTopico dadosAtualizacaoTopico) {
-		var topico = verTopicoAtivo(idTopico);
-		validacaoTopicos.validacaoTopicoFinalizado(topico);
+	public Topicos atualizarTopico(Long idTopico, AtualizacaoTopico dadosAtualizacaoTopico, Usuario usuario) {
+		var topico = confirmacaoUsuarioRequisicao(idTopico, usuario);
+		
 		topico.atualizar(dadosAtualizacaoTopico);
 		repository.save(topico);
 		return topico;
 	}
 
-	public void excluirTopico(Long idTopico) {
-		var topico = verTopicoAtivo(idTopico);
+	public void excluirTopico(Long idTopico, Usuario usuario) {
+		var topico = confirmacaoUsuarioRequisicao(idTopico, usuario);
+		
 		topico.excluir();
 		repository.save(topico);
 	}
 	
 	public Resposta finalizarTopico(RespostaDTO dadosResposta, Usuario usuario, Long idTopico) {
-		var topico = validacaoTopicos.validacaoTopicoPorId(idTopico);
+		var topico = confirmacaoUsuarioRequisicao(idTopico, usuario);
+		
+		topico.alterarStatus(StatusTopicos.RESOLVIDO);
+		
+		var resposta = new Resposta(dadosResposta, topico.getAutor(), topico);
+		respostaRepository.save(resposta);
+		return resposta;
+	}
+	
+	private Topicos confirmacaoUsuarioRequisicao(Long idTopico, Usuario usuario) {
+		var topico = verTopicoAtivo(idTopico);
 		var usuarioO = validacaoUsuarios.validacaoUsuarioPorNome(usuario.getUsuario());
 		
 		validacaoTopicos.validacaoTopicoFinalizado(topico);
 		validacaoUsuarios.validacaoUsuarioUsuario(topico.getAutor(), usuarioO);
-		
-		topico.alterarStatus(StatusTopicos.RESOLVIDO);
-		
-		var resposta = new Resposta(dadosResposta, usuarioO, topico);
-		respostaRepository.save(resposta);
-		return resposta;
+		return topico;
 	}
 	
 }

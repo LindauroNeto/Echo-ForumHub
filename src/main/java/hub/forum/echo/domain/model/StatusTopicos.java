@@ -8,7 +8,7 @@ public enum StatusTopicos {
 	SEM_RESPOSTAS("sem respostas"),
 	EM_ABERTO("em aberto"),
 	RESOLVIDO("resolvido"),
-	ENCERRADO("encerrado");
+	EXCLUIDO("encerrado");
 	
 	private String mensagem;
 	

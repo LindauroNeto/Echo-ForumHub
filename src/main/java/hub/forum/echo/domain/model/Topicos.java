@@ -42,14 +42,14 @@ public class Topicos {
 	@Column(nullable = false, unique = true)
 	private String titulo;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, columnDefinition = "MEDIUMTEXT")
 	private String mensagem;
 	
 	@CreationTimestamp
 	@Column(name = "data_de_criacao", nullable = false, updatable = false)
 	private LocalDateTime data;
 	
-	@Column(name = "status_topico")
+	@Column(name = "status_topico", updatable = true)
 	@Enumerated(EnumType.STRING)
 	private StatusTopicos status;
 	
@@ -80,7 +80,7 @@ public class Topicos {
 	
 	public void excluir() {
 		this.topicoAtivo = false;
-		alterarStatus(StatusTopicos.ENCERRADO);
+		alterarStatus(StatusTopicos.EXCLUIDO);
 	}
 
 	public Topicos(TopicoDTO dados, Usuario usuario) {

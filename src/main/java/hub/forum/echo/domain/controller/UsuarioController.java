@@ -62,7 +62,7 @@ public class UsuarioController {
 	public ResponseEntity<?> cadastro(@RequestBody @Valid CadastroDTO dadosCadastro, UriComponentsBuilder uriBuilder){
 		var usuario = service.criacaoUsuario(dadosCadastro);
 		var uri = pathUriService.criacaoPathUri(uriBuilder, usuario.getId(), "cadastro");
-		return ResponseEntity.created(uri).body("Usuário criado com sucesso!");
+		return ResponseEntity.created(uri).body(service.detalharUsuario(usuario.getId()));
 	}
 	
 	@GetMapping

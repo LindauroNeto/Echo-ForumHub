@@ -85,7 +85,7 @@ public class TopicosController {
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
 	public ResponseEntity<?> listarUm(@PathVariable Long idTopico) {
-		var topico = service.verTopico(idTopico);
+		var topico = service.verTopicoAtivo(idTopico);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}
 	
@@ -94,12 +94,14 @@ public class TopicosController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Tópico atualizado"),
 			@ApiResponse(responseCode = "400", description = "Preenchimento inválido dos campos"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autorizado para atualizar o tópico"),
 			@ApiResponse(responseCode = "404", description = "Tópico não encontrado ou excluído"),
 			@ApiResponse(responseCode = "403", description = "Token inválido / Tópico já encerrado"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
-	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopico dadosAtualizacaoTopico) {
-		var topico = service.atualizarTopico(idTopico, dadosAtualizacaoTopico);
+	public ResponseEntity<?> atualizar(@PathVariable Long idTopico, @RequestBody @Valid AtualizacaoTopico dadosAtualizacaoTopico, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		var topico = service.atualizarTopico(idTopico, dadosAtualizacaoTopico, usuarioAtrelado);
 		return ResponseEntity.status(HttpStatus.OK).body(new DetalhamentoTopicos(topico));
 	}
 	
@@ -107,12 +109,14 @@ public class TopicosController {
 	@Operation(summary = "Excluir tópico", description = "Exclusão lógica de tópico")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "204", description = "Tópico excluído"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autorizado para excluir o tópico"),
 			@ApiResponse(responseCode = "404", description = "Tópico não encontrado ou encerrado"),
 			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
 	})
-	public ResponseEntity<?> deletar(@PathVariable Long idTopico) {
-		service.excluirTopico(idTopico);
+	public ResponseEntity<?> deletar(@PathVariable Long idTopico, HttpServletRequest request) {
+		var usuarioAtrelado = atrelamento.obterUsuario(request);
+		service.excluirTopico(idTopico, usuarioAtrelado);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
@@ -121,6 +125,7 @@ public class TopicosController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Tópico resolvido"),
 			@ApiResponse(responseCode = "400", description = "Preenchimento inválido da mensagem final"),
+			@ApiResponse(responseCode = "401", description = "Usuário não autorizado para finalizar o tópico"),
 			@ApiResponse(responseCode = "404", description = "Tópico não encontrado ou encerrado"),
 			@ApiResponse(responseCode = "403", description = "Token inválido"),
 			@ApiResponse(responseCode = "500", description = "Problema interno no servidor"),
